@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Learnova - Register</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0; 
+        background: #f0f4fa;
+        overflow-x: hidden;
+    }
+    header {
+        background: #2e7eed;
+        color: #fff;
+        padding: 15px 20px;
+        position: fixed;
+        width: 100%;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 1px 8px rgba(30,64,160,.09);
+    }
+    .logo {
+        font-weight: 700;
+        font-size: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .search-container {
+        position: relative;
+        flex: 1;
+        max-width: 300px;
+        margin-left: 20px;
+        display: flex;
+        justify-content: center;
+    }
+    .search-container input[type="text"] {
+        width: 100%;
+        padding: 7px 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 7px 0 0 7px;
+        outline: none;
+    }
+    .search-container button {
+        padding: 7px 14px;
+        font-size: 16px;
+        background-color: #fff;
+        color: #2e7eed;
+        border: none;
+        border-radius: 0 7px 7px 0;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+    .search-container button:hover {
+        background: #e3ecfb;
+    }
+
+    main {
+        max-width: 400px;
+        margin: 120px auto 40px;
+        background: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        box-shadow: 0 8px 28px rgb(30 64 160 / 8%);
+    }
+    main h2 {
+        text-align: center;
+        color: #2e7eed;
+        margin-bottom: 28px;
+        font-weight: 700;
+    }
+    label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        display: block;
+        color: #333;
+    }
+    input[type="text"], input[type="email"], input[type="password"] {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 20px;
+        border: 2px solid #ccc;
+        border-radius: 6px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus {
+        border-color: #2e7eed;
+    }
+
+    button {
+        width: 100%;
+        background-color: #2e7eed;
+        color: white;
+        font-size: 18px;
+        border: none;
+        padding: 14px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background 0.3s;
+    }
+    button:hover {
+        background-color: #1b50c7;
+    }
+
+    @media (max-width: 480px) {
+        main {
+            margin: 100px 20px 30px;
+            padding: 25px;
+        }
+        .search-container {
+            max-width: 180px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">EduAlign</div>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search..." />
+        <button id="searchBtn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </button>
+    </div>
+</header>
+
+<main>
+    <h2>Register</h2>
+    <form id="registerForm">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" name="fullName" placeholder="Your full name" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Enter email" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required />
+
+        <button type="submit">Sign up</button>
+    </form>
+</main>
+
+<script>
+    document.getElementById('searchBtn').addEventListener('click', function () {
+        const query = document.getElementById('searchInput').value.trim();
+        if (query) alert('Searching for: ' + query);
+        else alert('Please enter a search term.');
+    });
+
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const fullName = this.fullName.value.trim();
+        const email = this.email.value.trim();
+        const password = this.password.value.trim();
+
+        if (!fullName || !email || !password) {
+            alert('Please fill all fields.');
+            return;
+        }
+
+        alert(`Welcome ${fullName}! You have successfully registered.`);
+
+        // Redirect to student dashboard
+        window.location.href = "student-dashboard.html";
+
+        this.reset();
+    });
+</script>
+
+</body>
+</html>

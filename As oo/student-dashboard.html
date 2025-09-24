@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learnova - Student Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #50e3c2;
+            --background-color: #f4f7f9;
+            --card-background: #fff;
+            --text-color: #333;
+            --light-text-color: #777;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            background-color: var(--card-background);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(-250px);
+            z-index: 1000;
+        }
+
+        .sidebar.active {
+            transform: translateX(0);
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .sidebar-header .close-btn {
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--light-text-color);
+            padding: 5px;
+            align-self: flex-start;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .sidebar ul li a i {
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .sidebar ul li a:hover, .sidebar ul li a.active {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            margin-left: 0;
+            transition: margin-left 0.3s ease-in-out;
+        }
+
+        .main-content.shifted {
+            margin-left: 250px;
+        }
+
+        /* --- Top Bar --- */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .topbar .nav-button {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .topbar .nav-button div {
+            width: 30px;
+            height: 4px;
+            background-color: var(--text-color);
+            margin: 4px 0;
+            border-radius: 2px;
+        }
+        
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-container input {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            width: 250px;
+            font-size: 14px;
+            padding-left: 40px;
+            transition: width 0.3s ease;
+        }
+        
+        .search-container input:focus {
+            width: 300px;
+            outline: none;
+        }
+        
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            color: var(--light-text-color);
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .profile-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        /* --- Dashboard Sections --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Changed to single column */
+            gap: 20px;
+        }
+
+        .events-section {
+            background-color: var(--card-background);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        .events-section h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.25rem;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .event-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .event-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .event-item .date-box {
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .date-box .day {
+            font-size: 1.5rem;
+        }
+        
+        .date-box .month {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+        
+        .event-info h4 {
+            margin: 0;
+            font-size: 1rem;
+        }
+        
+        .event-info p {
+            margin: 5px 0 0;
+            font-size: 0.85rem;
+            color: var(--light-text-color);
+        }
+
+        .welcome-card {
+            background-color: var(--card-background);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .welcome-card h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin: 0 0 10px 0;
+        }
+
+        .welcome-card p {
+            margin: 0;
+            color: var(--light-text-color);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.active {
+                width: 100%;
+                transform: translateX(0);
+            }
+
+            .main-content.shifted {
+                margin-left: 0;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .search-container input {
+                width: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>EduAlign</h2>
+            <i class="fas fa-times close-btn" id="closeBtn"></i>
+        </div>
+        <ul>
+            <li><a href="student-dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="hack.html"><i class="fas fa-microchip"></i> Hackathons</a></li>
+            <li><a href="workshop.html"><i class="fas fa-chalkboard-teacher"></i> Workshops</a></li>
+            <li><a href="webinar.html"><i class="fas fa-video"></i> Webinars</a></li>
+            <li><a href="scholar.html"><i class="fas fa-graduation-cap"></i> Scholarships</a></li>
+            <li><a href="intern.html"><i class="fas fa-briefcase"></i> Technology Trends </a></li>
+            <li><a href="chatbot.html"><i class="fas fa-map-signs"></i> Roadmaps</a></li>
+            <li><a href="chatbot.html"><i class="fas fa-laptop-code"></i> Mini-projects</a></li>
+            <li><a href="text.html"><i class="fas fa-book"></i> Textbooks</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+        <header class="topbar">
+            <div class="nav-button" id="navBtn">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="profile-info">
+                <span>Welcome, Student!</span>
+                <img src="https://i.pravatar.cc/150?img=1" alt="Profile Picture">
+            </div>
+        </header>
+
+        <div class="welcome-card">
+            <h2>Welcome to your Dashboard! 👋</h2>
+            <p>Your one-stop place for all academic and career opportunities.</p>
+        </div>
+
+        <section class="dashboard-grid">
+            <div class="events-section">
+                <h3>Upcoming Events 📅</h3>
+                <div class="event-list" id="eventList">
+                    </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const navBtn = document.getElementById('navBtn');
+        const closeBtn = document.getElementById('closeBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const eventList = document.getElementById('eventList');
+
+        // Toggle sidebar
+        navBtn.addEventListener('click', () => {
+            sidebar.classList.add('active');
+            mainContent.classList.add('shifted');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            mainContent.classList.remove('shifted');
+        });
+
+        // Close sidebar if user clicks outside of it on smaller screens
+        document.addEventListener('click', (event) => {
+            if (!sidebar.contains(event.target) && !navBtn.contains(event.target) && window.innerWidth <= 768) {
+                sidebar.classList.remove('active');
+                mainContent.classList.remove('shifted');
+            }
+        });
+
+        // Sample event data (you can replace this with data from a backend)
+        const events = [
+            { day: '25', month: 'SEP', title: 'Web Development Workshop', details: 'Introduction to React.js' },
+            { day: '02', month: 'OCT', title: 'Data Science Webinar', details: 'The Future of AI in Education' },
+            { day: '15', month: 'OCT', title: 'Hackathon: Code for a Cause', details: 'Build solutions for a better community' },
+            { day: '20', month: 'OCT', title: 'Scholarship Application Deadline', details: 'Final submission for the Tech Innovators Scholarship' },
+            { day: '05', month: 'NOV', title: 'Mini-Project Showcase', details: 'Present your completed mini-projects to peers' }
+        ];
+
+        // Function to render events
+        function renderEvents() {
+            eventList.innerHTML = '';
+            events.forEach(event => {
+                const eventItem = document.createElement('div');
+                eventItem.classList.add('event-item');
+                eventItem.innerHTML = `
+                    <div class="date-box">
+                        <span class="day">${event.day}</span>
+                        <span class="month">${event.month}</span>
+                    </div>
+                    <div class="event-info">
+                        <h4>${event.title}</h4>
+                        <p>${event.details}</p>
+                    </div>
+                `;
+                eventList.appendChild(eventItem);
+            });
+        }
+
+        // Render events on page load
+        document.addEventListener('DOMContentLoaded', renderEvents);
+    </script>
+</body>
+</html>
